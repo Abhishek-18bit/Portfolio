@@ -5,6 +5,7 @@ import Lenis from 'lenis';
 import CustomCursor from '@/components/cursor/CustomCursor';
 import Loader from '@/components/loader/Loader';
 import Navbar from '@/components/navbar/Navbar';
+import ParticleBackground from '@/components/background/ParticleBackground';
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +40,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
         <>
           <CustomCursor />
           <Navbar />
+          <ParticleBackground />
           <div className="relative z-10">{children}</div>
         </>
       )}

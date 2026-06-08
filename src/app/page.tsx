@@ -8,6 +8,7 @@ import CodingProfiles from '@/sections/CodingProfiles/CodingProfiles';
 import Education from '@/sections/Education/Education';
 import Achievements from '@/sections/Achievements/Achievements';
 import Contact from '@/sections/Contact/Contact';
+import Footer from '@/components/common/Footer';
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Education />
       <Achievements />
       <Contact />
+      <Footer />
     </main>
   );
 }

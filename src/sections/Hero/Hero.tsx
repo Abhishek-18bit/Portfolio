@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ROLES } from '@/constants';
 import dynamic from 'next/dynamic';
-import { FiArrowDown, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 import { HiOutlineArrowRight } from 'react-icons/hi';
 
 // Dynamically load the WebGL scene to isolate Three.js canvas on the client side
@@ -80,46 +80,49 @@ export default function Hero() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-bg"
     >
       {/* Background neon blobs */}
-      <div className="absolute top-[20%] left-[-10%] w-[350px] h-[350px] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[350px] h-[350px] rounded-full bg-secondary/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[20%] left-[-10%] w-[350px] h-[350px] rounded-full bg-purple-600/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[-10%] w-[350px] h-[350px] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none" />
 
-      <div className="section-container w-full">
-        <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[80vh]">
+
+
+      <div className="section-container w-full relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           
           {/* Left Panel: Text & CTAs */}
           <div className="flex flex-col gap-6 z-10">
             
             {/* Status badge */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="tag tag-orange">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <div className="tag tag-orange border-orange-500/20 bg-orange-500/5 text-orange-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
                 Open to Internships & Engineering Roles
               </div>
             </motion.div>
 
             {/* Title block */}
             <div ref={headingRef}>
-              <div className="text-xs font-mono mb-2 tracking-widest text-text-secondary uppercase">
-                // Hello, World. I am
-              </div>
-              <h1 className="section-title mb-3 leading-none">
+
+              
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-4 uppercase font-sans select-none">
                 Abhishek
                 <br />
-                <span className="gradient-text">Kumar</span>
+                <span className="text-stroke bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 font-black">
+                  Kumar
+                </span>
               </h1>
 
               {/* Typewriter */}
-              <div className="text-lg md:text-xl font-mono min-h-[30px] flex items-center">
-                <span className="text-text-secondary mr-2">&gt;</span>
-                <span className="text-primary-light font-bold">{displayText}</span>
-                <span className="inline-block w-1.5 h-5 ml-1 bg-secondary animate-pulse" />
+              <div className="text-sm md:text-base font-mono min-h-[30px] flex items-center tracking-wider text-neutral-300">
+                <span className="text-orange-500 mr-2.5 font-bold">&gt;_</span>
+                <span className="text-white font-bold">{displayText}</span>
+                <span className="inline-block w-1.5 h-4 ml-1 bg-purple-500 animate-pulse shadow-[0_0_6px_#A855F7]" />
               </div>
             </div>
 
@@ -131,21 +134,21 @@ export default function Hero() {
               A systems engineer and full-stack developer specializing in building{' '}
               <span className="text-white font-semibold">isolated execution runtimes</span> and{' '}
               <span className="text-white font-semibold">highly interactive interfaces</span>. Backed by{' '}
-              <span className="text-secondary-light font-bold">1200+ solved algorithmic challenges</span> across standard profiles.
+              <span className="text-orange-400 font-bold">1200+ solved algorithmic challenges</span> across standard profiles.
             </p>
 
             {/* CTAs */}
             <div ref={ctaRef} className="flex flex-wrap gap-3.5 items-center">
               <button
                 onClick={() => handleScroll('projects')}
-                className="btn-primary cursor-none"
+                className="btn-primary cursor-none border-purple-500/30 bg-gradient-to-r from-purple-600 to-purple-400 hover:from-purple-500 hover:to-purple-300"
               >
                 <span>Explore Works</span>
                 <HiOutlineArrowRight size={15} />
               </button>
               <button
                 onClick={() => handleScroll('contact')}
-                className="btn-secondary cursor-none"
+                className="btn-secondary cursor-none border-orange-500/20 text-orange-400 hover:border-orange-500/40 hover:bg-orange-500/5"
               >
                 <span>Get In Touch</span>
               </button>
@@ -153,7 +156,7 @@ export default function Hero() {
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-secondary cursor-none text-xs"
+                className="btn-secondary cursor-none text-xs border-orange-500/20 text-orange-400 hover:border-orange-500/40 hover:bg-orange-500/5"
               >
                 <span>Resume</span>
               </a>
@@ -161,9 +164,7 @@ export default function Hero() {
 
             {/* Social profiles */}
             <div className="flex items-center gap-4 pt-2">
-              <span className="text-xs font-mono text-text-secondary">
-                // CONNECT
-              </span>
+
               <div className="flex gap-2.5">
                 {[
                   { icon: FiGithub, url: 'https://github.com/abhishek-kumar', label: 'GitHub', color: '#A855F7' },
@@ -198,38 +199,94 @@ export default function Hero() {
 
           </div>
 
-          {/* Right Panel: WebGL Scene */}
+          {/* Right Panel: WebGL Scene with Scoping Rings & IDE */}
           <div className="relative w-full h-[450px] lg:h-[550px] flex items-center justify-center">
-            <HeroScene3D />
             
-            {/* Holographic terminal card */}
-            <div className="absolute bottom-6 right-2 sm:right-6 p-4 rounded-xl border border-white/5 bg-[#0A0A0A]/95 shadow-2xl backdrop-blur-md font-mono text-[10px] text-text-secondary select-none">
-              <span className="text-primary-light">const</span> engineer = {'{'}
-              <br />
-              &nbsp;&nbsp;name: <span className="text-secondary-light">"Abhishek Kumar"</span>,
-              <br />
-              &nbsp;&nbsp;focus: <span className="text-secondary-light">"Full Stack / Systems"</span>,
-              <br />
-              &nbsp;&nbsp;dsa_solved: <span className="text-primary-light">1200</span>
-              <br />
-              {'}'};
+            {/* Concentric rotating scoping rings (HTML/CSS overlays) */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 select-none scale-[0.82] md:scale-100">
+              <div className="relative w-[380px] h-[380px] md:w-[460px] md:h-[460px] flex items-center justify-center">
+                
+                {/* Ring 1: Outer Dashed Scope (Purple) */}
+                <div className="absolute w-full h-full border border-dashed border-purple-500/10 rounded-full animate-spin-slow" />
+                
+                {/* Ring 2: Telemetry Tick Ring */}
+                <div className="absolute w-[92%] h-[92%] border border-purple-500/10 rounded-full animate-spin-reverse-slow">
+                  <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[6px] font-mono text-purple-400/40">00°</span>
+                  <span className="absolute right-1 top-1/2 -translate-y-1/2 text-[6px] font-mono text-purple-400/40">90°</span>
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[6px] font-mono text-purple-400/40">180°</span>
+                  <span className="absolute left-1 top-1/2 -translate-y-1/2 text-[6px] font-mono text-purple-400/40">270°</span>
+                </div>
+                
+                {/* Ring 3: Inner Solid Scope (Orange) */}
+                <div className="absolute w-[80%] h-[80%] border border-orange-500/10 rounded-full animate-spin-fast" />
+                
+                {/* Crosshair Target Locked overlay */}
+                <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 flex items-center gap-1.5 font-mono text-[7px] text-orange-400/60 tracking-widest whitespace-nowrap bg-[#0A0A0A]/95 px-2.5 py-0.5 border border-orange-500/20 rounded">
+                  <span className="w-1 h-1 rounded-full bg-orange-400 animate-ping" />
+                  <span>CORE_LOCK_A // ON</span>
+                </div>
+              </div>
             </div>
+
+            {/* 3D Canvas */}
+            <div className="w-full h-full z-10 relative">
+              <HeroScene3D />
+            </div>
+            
+            {/* Holographic Developer IDE Console */}
+            <div className="absolute bottom-2 right-2 sm:right-6 p-4 rounded-xl border border-white/5 bg-[#0D0D0D]/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md font-mono text-[9px] relative overflow-hidden select-none z-20 w-[240px] md:w-[270px] hover:border-purple-500/20 transition-colors duration-300">
+              {/* Editor top header */}
+              <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-2.5 text-[8px] text-neutral-500">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-red-500/60" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
+                  <div className="w-2 h-2 rounded-full bg-green-500/60" />
+                  
+                  {/* File tab */}
+                  <div className="ml-2 px-1.5 py-0.5 border border-white/5 bg-white/[0.02] rounded text-neutral-300 flex items-center gap-1">
+                    <span>engineer.json</span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-1 text-[7px] text-purple-400">
+                  <span>JSON</span>
+                </div>
+              </div>
+
+              {/* Editor code area */}
+              <div className="flex gap-3 text-left">
+                <div className="flex flex-col text-neutral-600 text-right select-none w-3 font-mono">
+                  <span>01</span>
+                  <span>02</span>
+                  <span>03</span>
+                  <span>04</span>
+                  <span>05</span>
+                </div>
+                <div className="text-neutral-400 w-full font-mono">
+                  <div>{'{'}</div>
+                  <div>&nbsp;&nbsp;<span className="text-purple-400">"name"</span>: <span className="text-orange-400">"Abhishek Kumar"</span>,</div>
+                  <div>&nbsp;&nbsp;<span className="text-purple-400">"focus"</span>: <span className="text-orange-400">"Full Stack / Systems"</span>,</div>
+                  <div>&nbsp;&nbsp;<span className="text-purple-400">"solved"</span>: <span className="text-orange-400">"1200+ DSA"</span>,</div>
+                  <div>&nbsp;&nbsp;<span className="text-purple-400">"status"</span>: <span className="text-orange-400">"Open for Roles"</span></div>
+                  <div>{'}'}</div>
+                </div>
+              </div>
+
+              {/* Editor live logs footer */}
+              <div className="border-t border-white/5 pt-2 mt-2.5 text-[7px] text-neutral-500 flex flex-col gap-0.5">
+                <span className="text-neutral-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_4px_#10b981]" /> Live Telemetry
+                </span>
+                <span>&gt; compiling sandbox environment... done</span>
+                <span>&gt; connection link: nominal (V8)</span>
+              </div>
+            </div>
+
           </div>
 
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          onClick={() => handleScroll('about')}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-none"
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <span className="text-[9px] font-mono tracking-[0.25em] text-text-secondary">
-            SCROLL
-          </span>
-          <FiArrowDown className="text-secondary" size={14} />
-        </motion.div>
+
       </div>
     </section>
   );
