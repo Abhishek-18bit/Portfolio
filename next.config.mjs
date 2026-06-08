@@ -2,10 +2,10 @@
 const nextConfig = {
   transpilePackages: ['three'],
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   }
 };
 
