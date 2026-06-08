@@ -1,21 +1,25 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-const CustomCursor = () => {
-  const dotRef = useRef(null);
-  const ringRef = useRef(null);
+export default function CustomCursor() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
   const posRef = useRef({ x: 0, y: 0 });
   const ringPosRef = useRef({ x: 0, y: 0 });
-  const rafRef = useRef(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Only show on non-touch devices
+    if (typeof window === 'undefined') return;
     if ('ontouchstart' in window) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
 
-    const onMouseMove = (e) => {
+    if (!dot || !ring) return;
+
+    const onMouseMove = (e: MouseEvent) => {
       posRef.current = { x: e.clientX, y: e.clientY };
       gsap.to(dot, {
         x: e.clientX,
@@ -62,18 +66,18 @@ const CustomCursor = () => {
 
     const addInteractiveListeners = () => {
       const interactives = document.querySelectorAll(
-        'a, button, [data-cursor="pointer"], input, textarea, .skill-badge, .tilt-card'
+        'a, button, [data-cursor="pointer"], input, textarea, .skill-badge, .tilt-card, .btn-primary, .btn-secondary'
       );
       interactives.forEach((el) => {
+        el.removeEventListener('mouseenter', onMouseEnterInteractive);
+        el.removeEventListener('mouseleave', onMouseLeaveInteractive);
         el.addEventListener('mouseenter', onMouseEnterInteractive);
         el.addEventListener('mouseleave', onMouseLeaveInteractive);
       });
     };
 
-    // Add with slight delay to ensure DOM is ready
     setTimeout(addInteractiveListeners, 1000);
 
-    // Re-apply when DOM changes
     const observer = new MutationObserver(addInteractiveListeners);
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -81,17 +85,15 @@ const CustomCursor = () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       observer.disconnect();
     };
   }, []);
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={ringRef} className="cursor-ring" />
+      <div ref={dotRef} className="cursor-dot hidden md:block" />
+      <div ref={ringRef} className="cursor-ring hidden md:block" />
     </>
   );
-};
-
-export default CustomCursor;
+}
