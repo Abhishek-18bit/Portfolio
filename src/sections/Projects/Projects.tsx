@@ -21,15 +21,15 @@ function ProjectCard({ project, index }: ProjectCardProps) {
 
   return (
     <Tilt
-      tiltMaxAngleX={12}
-      tiltMaxAngleY={12}
+      tiltMaxAngleX={8}
+      tiltMaxAngleY={8}
       perspective={1000}
       scale={1.03}
       transitionSpeed={800}
       glareEnable={true}
-      glareMaxOpacity={0.06}
+      glareMaxOpacity={0.03}
       glareColor={project.color}
-      className="h-full"
+      className="h-[370px] w-full"
       style={{ transformStyle: 'preserve-3d' }}
     >
       <motion.div
@@ -39,117 +39,389 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         transition={{ delay: index * 0.08, duration: 0.5 }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="h-full flex flex-col transition-all duration-300 relative"
+        className="w-full h-full relative"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* Background Card Base */}
+        {/* The 3D Flipping Card Container */}
         <div
-          className="absolute inset-0 glass rounded-2xl bg-[#161616]/40 transition-all duration-300 pointer-events-none"
+          className="w-full h-full rounded-2xl p-[1px] relative transition-transform duration-700 cursor-none"
           style={{
-            border: hovered ? `1px solid ${project.color}35` : '1px solid var(--border)',
-            boxShadow: hovered ? `0 20px 40px ${project.color}08, 0 0 20px rgba(0,0,0,0.2)` : 'none',
-            transform: 'translateZ(0px)',
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.5s ease',
+            transform: hovered ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            background: hovered
+              ? `linear-gradient(to bottom, ${project.color}60, transparent)`
+              : 'linear-gradient(to bottom, rgba(255,255,255,0.08), transparent)',
           }}
-        />
-
-        {/* Content wrapper with preserve-3d */}
-        <div className="relative z-10 flex flex-col h-full" style={{ transformStyle: 'preserve-3d' }}>
-          
-          {/* Mock UI Preview */}
+        >
+          {/* FRONT FACE */}
           <div
-            className="relative h-40 flex items-center justify-center"
+            className="absolute inset-[1px] rounded-[15px] overflow-hidden bg-[#111113]/95 flex flex-col select-none"
             style={{
-              background: `linear-gradient(135deg, ${project.color}08, rgba(124, 58, 237, 0.03))`,
-              borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-              borderTopLeftRadius: '1rem',
-              borderTopRightRadius: '1rem',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
               transformStyle: 'preserve-3d',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
             }}
           >
-            {/* Simulated Browser Card */}
-            <div className="absolute inset-0 flex items-center justify-center p-5 select-none" style={{ transformStyle: 'preserve-3d' }}>
-              <div className="w-full max-w-[200px]" style={{ transform: 'translateZ(45px)', transformStyle: 'preserve-3d' }}>
+            {/* Glowing Indicator Dot at top center */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center pointer-events-none">
+              <div
+                className="w-1.5 h-1.5 rounded-full animate-pulse transition-all duration-500"
+                style={{
+                  backgroundColor: project.color,
+                  boxShadow: `0 0 10px ${project.color}, 0 0 20px ${project.color}`,
+                }}
+              />
+            </div>
+
+            {/* Front Face Ambient Glow Orb */}
+            <div
+              className="absolute right-0 bottom-0 w-32 h-32 rounded-full blur-[50px] pointer-events-none opacity-20 z-0"
+              style={{
+                background: `radial-gradient(circle, ${project.color}15 0%, transparent 70%)`,
+                transform: 'translate(10%, 10%) translateZ(5px)',
+              }}
+            />
+
+            {/* Mock UI Preview (Front Only) */}
+            <div
+              className="relative h-40 flex items-center justify-center border-b border-white/5 z-10"
+              style={{
+                background: `linear-gradient(135deg, ${project.color}05, rgba(124, 58, 237, 0.01))`,
+                transformStyle: 'preserve-3d',
+              }}
+            >
+              {/* Simulated Browser Card */}
+              <div className="absolute inset-0 flex items-center justify-center p-5 select-none" style={{ transformStyle: 'preserve-3d' }}>
                 <div
-                  className="rounded-lg overflow-hidden bg-[#0A0A0A]/90 shadow-2xl"
-                  style={{ border: `1px solid ${project.color}20` }}
+                  className={`w-full transition-all duration-500 scale-[1.02] ${
+                    project.id === 2 ? 'max-w-[245px]' : 'max-w-[210px]'
+                  }`}
+                  style={{ transform: 'translateZ(30px)', transformStyle: 'preserve-3d' }}
                 >
-                  {/* Header */}
-                  <div
-                    className="flex items-center gap-1.5 px-3 py-1.5 border-b"
-                    style={{ borderColor: 'rgba(255,255,255,0.05)' }}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500/70" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/70" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500/70" />
-                    <span className="ml-1 text-[7px] font-mono text-neutral-500">
-                      {project.title.toLowerCase()}.ts
-                    </span>
-                  </div>
-                  {/* Code Mock content */}
-                  <div className="p-3 space-y-1.5 font-mono text-[7px]">
-                    <div className="flex gap-1">
-                      <span className="text-purple-400">const</span>
-                      <span className="text-blue-400">spec</span>
-                      <span className="text-white">=</span>
-                      <span className="text-green-400">"{project.title}"</span>
+                  {/* 1. CSV Query Compiler Card (id: 2) */}
+                  {project.id === 2 && (
+                    <div className="w-full h-[125px] rounded-lg border bg-[#08090C] shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative" style={{ borderColor: `${project.color}35`, boxShadow: `0 10px 25px -5px ${project.color}15` }}>
+                      <div className="flex items-center justify-between px-2 py-1 bg-[#0D0F14] border-b border-white/5 z-10">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-[#EF4444]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#F59E0B]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#10B981]/80" />
+                          <span className="ml-1.5 text-[#94A3B8] font-bold text-[5.5px] flex items-center gap-1 font-mono">
+                            compiler.app
+                          </span>
+                        </div>
+                        <span className="px-1 py-0.2 rounded bg-sky-500/10 text-sky-400 text-[4.5px] font-mono">LIVE PREVIEW</span>
+                      </div>
+                      <div className="flex-1 relative overflow-hidden bg-black/40">
+                        <img
+                          src="/csv-compiler.jpg"
+                          alt="CSV Query Compiler"
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+                      </div>
                     </div>
-                    <div className="h-1 w-11/12 bg-white/5 rounded-full" />
-                    <div className="h-1 w-8/12 bg-white/5 rounded-full" />
-                    <div className="flex justify-between items-center pt-1">
-                      <span style={{ color: project.color }} className="font-semibold text-[6px]">
-                        // active
-                      </span>
-                      <span className="text-[6px] text-neutral-600 font-mono">{project.category}</span>
+                  )}
+
+                  {/* 2. CodeElevate Card (id: 3) */}
+                  {project.id === 3 && (
+                    <div className="w-full h-[125px] rounded-lg border bg-[#080B10] shadow-2xl overflow-hidden flex flex-col font-sans text-[6px] transition-all duration-300" style={{ borderColor: `${project.color}35`, boxShadow: `0 10px 25px -5px ${project.color}15` }}>
+                      <div className="flex items-center justify-between px-2 py-1 bg-[#0D1117] border-b border-white/5">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-[#EF4444]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#F59E0B]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#10B981]/80" />
+                          <span className="ml-1 text-neutral-400 font-mono text-[5.5px]">codeelevate.edu/editor</span>
+                        </div>
+                        <span className="px-1 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 text-[4.5px] font-mono font-semibold">SANDBOX ACTIVE</span>
+                      </div>
+
+                      <div className="flex-grow grid grid-cols-[0.8fr_1.2fr] divide-x divide-white/5 overflow-hidden">
+                        <div className="p-2 flex flex-col justify-between bg-[#080C14]">
+                          <div className="flex flex-col gap-1">
+                            <span className="font-bold text-white text-[7px] leading-tight">Reverse String</span>
+                            <span className="text-neutral-400 text-[5px] leading-relaxed">
+                              Write a function that reverses an input string in-place.
+                            </span>
+                          </div>
+
+                          <div className="flex flex-col gap-1 pt-1.5 border-t border-white/5">
+                            <div className="flex justify-between items-center text-[4.5px]">
+                              <span className="text-neutral-500 font-mono">Module 3 / Recursion</span>
+                              <span className="text-emerald-400 font-bold">85% Done</span>
+                            </div>
+                            <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                              <div className="h-full bg-emerald-500 rounded-full" style={{ width: '85%' }} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-2 flex flex-col justify-between bg-[#05070B] font-mono text-[5px] leading-relaxed text-neutral-300">
+                          <div className="space-y-0.5">
+                            <div>
+                              <span className="text-purple-400 font-semibold">function</span> <span className="text-emerald-400">reverse</span>(s) {'{'}
+                            </div>
+                            <div className="pl-2.5 text-neutral-400">// Two pointer strategy</div>
+                            <div className="pl-2.5">
+                              <span className="text-purple-400">let</span> [i, j] = [0, s.length - 1];
+                            </div>
+                            <div className="pl-2.5">
+                              <span className="text-purple-400">while</span> (i &lt; j) {'{'}
+                            </div>
+                            <div className="pl-5 text-neutral-400">[s[i], s[j]] = [s[j], s[i]];</div>
+                            <div className="pl-5 text-neutral-400">i++; j--;</div>
+                            <div className="pl-2.5">{'}'}</div>
+                            <div>{'}'}</div>
+                          </div>
+
+                          <div className="flex items-center justify-between p-1 rounded border" style={{ backgroundColor: `${project.color}12`, borderColor: `${project.color}25`, color: project.color }}>
+                            <span className="font-bold flex items-center gap-0.5">🟢 All 12/12 Tests Passed</span>
+                            <span className="font-mono opacity-80 text-[4px]">Runtime: 4ms</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* 3. AlgoViz Pro Card (id: 4) */}
+                  {project.id === 4 && (
+                    <div className="w-full h-[125px] rounded-lg border bg-[#0B0A08] shadow-2xl overflow-hidden flex flex-col font-sans text-[6px] transition-all duration-300" style={{ borderColor: `${project.color}35`, boxShadow: `0 10px 25px -5px ${project.color}15` }}>
+                      <div className="flex items-center justify-between px-2 py-1 bg-[#14120F] border-b border-white/5">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-[#EF4444]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#F59E0B]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#10B981]/80" />
+                          <span className="ml-1 text-neutral-400 font-mono text-[5.5px]">algoviz.pro/sorting</span>
+                        </div>
+                        <span className="px-1 py-0.2 rounded bg-amber-500/10 text-amber-400 font-mono text-[4.5px]">Quick Sort</span>
+                      </div>
+                      <div className="p-2 flex flex-col justify-between flex-grow h-[100px]">
+                        <div className="flex items-end justify-between h-[45px] px-2 bg-black/40 rounded border border-white/5 py-1">
+                          {[
+                            { h: 30, active: false },
+                            { h: 15, active: false },
+                            { h: 42, active: true },
+                            { h: 22, active: false },
+                            { h: 48, active: true },
+                            { h: 10, active: false },
+                            { h: 35, active: false },
+                            { h: 26, active: false },
+                          ].map((bar, idx) => (
+                            <div
+                              key={idx}
+                              className="w-2.5 rounded-t transition-all duration-300"
+                              style={{
+                                height: `${bar.h}%`,
+                                background: bar.active ? 'linear-gradient(to top, #EF4444, #FB923C)' : 'linear-gradient(to top, #4B5563, #9CA3AF)',
+                              }}
+                            />
+                          ))}
+                        </div>
+
+                        <div className="flex justify-between items-center bg-white/[0.02] border border-white/5 p-1 rounded font-mono">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-neutral-500 text-[4.5px]">COMPARING INDICES</span>
+                            <span className="text-amber-400 font-bold text-[5px]">i = 2 (val: 42) ➔ j = 4 (val: 48)</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-neutral-500 text-[4.5px] block">SWAPS</span>
+                            <span className="text-emerald-400 font-bold text-[5px]">14</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 4. EduStream Card (id: 5) */}
+                  {project.id === 5 && (
+                    <div className="w-full h-[125px] rounded-lg border bg-[#0B090E] shadow-2xl overflow-hidden flex flex-col font-sans text-[6px] transition-all duration-300" style={{ borderColor: `${project.color}35`, boxShadow: `0 10px 25px -5px ${project.color}15` }}>
+                      <div className="flex items-center justify-between px-2 py-1 bg-[#130F1A] border-b border-white/5">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-[#EF4444]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#F59E0B]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#10B981]/80" />
+                          <span className="ml-1 text-neutral-400 font-mono text-[5.5px]">edustream.io/player</span>
+                        </div>
+                      </div>
+
+                      <div className="flex-1 grid grid-cols-[1.2fr_0.8fr] divide-x divide-white/5 overflow-hidden">
+                        <div className="p-2 flex flex-col gap-1 justify-between bg-black">
+                          <div className="relative flex-1 rounded bg-[#1A1A1A] border border-white/5 flex items-center justify-center overflow-hidden">
+                            <div className="w-6 h-6 rounded-full bg-purple-500/20 border border-purple-500/35 flex items-center justify-center text-purple-300 font-bold text-[8px] animate-pulse">
+                              ▶
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-1.5 flex flex-col gap-1 bg-[#09070C]">
+                          <span className="text-[4.5px] text-neutral-500 font-mono">Chapters</span>
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-1 text-emerald-400 leading-none">
+                              <span>✔</span>
+                              <span className="text-[4px] font-bold truncate">1. Introduction</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 5. WeatherAI Card (id: 6) */}
+                  {project.id === 6 && (
+                    <div className="w-full h-[125px] rounded-lg border bg-[#090B0D] shadow-2xl overflow-hidden flex flex-col font-sans text-[6px] transition-all duration-300" style={{ borderColor: `${project.color}35`, boxShadow: `0 10px 25px -5px ${project.color}15` }}>
+                      <div className="flex items-center justify-between px-2 py-1 bg-[#101317] border-b border-white/5">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-[#EF4444]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#F59E0B]/80" />
+                          <span className="w-1 h-1 rounded-full bg-[#10B981]/80" />
+                          <span className="ml-1 text-neutral-400 font-mono text-[5.5px]">weather_ai_predict</span>
+                        </div>
+                      </div>
+
+                      <div className="flex-1 grid grid-cols-[1.1fr_0.9fr] divide-x divide-white/5 overflow-hidden">
+                        <div className="p-2 flex flex-col justify-between bg-[#08090C]">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#EF4444] font-bold text-[7px] leading-none">24°C</span>
+                            <span className="text-[8px] leading-none">🌤</span>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <span className="font-bold text-white text-[5px]">San Francisco</span>
+                          </div>
+                        </div>
+
+                        <div className="p-2 flex flex-col gap-1 bg-[#060709] justify-between">
+                          <div className="p-1 rounded bg-amber-500/5 border border-amber-500/10 text-[4.2px] text-neutral-300 leading-normal italic">
+                            "Wind velocities increasing..."
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 6. Fallback */}
+                  {project.id !== 2 && project.id !== 3 && project.id !== 4 && project.id !== 5 && project.id !== 6 && (
+                    <div className="rounded-lg overflow-hidden bg-[#0A0A0A]/90 shadow-2xl border" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500/70" />
+                        <span className="ml-1 text-[7px] font-mono text-neutral-500">
+                          {project.title.toLowerCase().replace(/\s+/g, '')}.ts
+                        </span>
+                      </div>
+                      <div className="p-3 space-y-1.5 font-mono text-[7px]">
+                        <div className="flex gap-1">
+                          <span className="text-purple-400">const</span>
+                          <span className="text-blue-400">spec</span>
+                          <span className="text-white">=</span>
+                          <span className="text-green-400">"{project.title}"</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-t-2xl"
-              style={{
-                background: `radial-gradient(circle, ${project.color}08 0%, transparent 60%)`,
-              }}
-            />
+            {/* Front Info Area */}
+            <div className="p-5 flex flex-col justify-between flex-grow z-10" style={{ transformStyle: 'preserve-3d' }}>
+              <div style={{ transform: 'translateZ(25px)' }}>
+                <span className="text-[9px] font-mono tracking-widest text-neutral-500 uppercase block mb-1">
+                  {project.category}
+                </span>
+                <h4 className="text-base font-bold mb-1 font-sans tracking-tight text-white">
+                  {project.title}
+                </h4>
+                <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+                  {project.subtitle}
+                </p>
+              </div>
+
+              {/* Bottom Hint */}
+              <div className="flex items-center justify-between py-2 text-[9px] font-mono text-neutral-500 border-t border-white/5 pt-3 mt-auto">
+                <span className="animate-pulse">Hover to reveal details</span>
+                <span className="text-[10px]">➜</span>
+              </div>
+            </div>
           </div>
 
-          {/* Info */}
-          <div className="p-5 flex flex-col flex-1 gap-4" style={{ transformStyle: 'preserve-3d' }}>
-            <div style={{ transform: 'translateZ(25px)' }}>
-              <h4
-                className="text-base font-bold mb-1.5 transition-colors duration-300"
-                style={{ color: hovered ? 'var(--primary-light)' : 'white' }}
-              >
-                {project.title}
-              </h4>
-              <p className="text-xs text-text-secondary leading-relaxed line-clamp-3">
-                {project.description}
-              </p>
-            </div>
+          {/* BACK FACE */}
+          <div
+            className="absolute inset-[1px] rounded-[15px] overflow-hidden bg-[#0C0C0E]/98 p-5 flex flex-col justify-between select-none z-10"
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg) translateZ(1px)',
+              transformStyle: 'preserve-3d',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+            }}
+          >
+            {/* Back Face Ambient Glow Orb */}
+            <div
+              className="absolute right-0 bottom-0 w-36 h-36 rounded-full blur-[60px] pointer-events-none opacity-40 z-0"
+              style={{
+                background: `radial-gradient(circle, ${project.color}35 0%, transparent 75%)`,
+                transform: 'translate(10%, 10%) translateZ(5px)',
+              }}
+            />
 
-            {/* Tech tags */}
-            <div className="flex flex-wrap gap-1.5 flex-1 items-end" style={{ transform: 'translateZ(20px)' }}>
-              {project.tech.slice(0, 3).map((t) => (
-                <span
-                  key={t}
-                  className="text-[9px] font-mono px-2 py-0.5 rounded-full border border-white/5 bg-white/[0.02] text-neutral-400"
-                >
-                  {t}
+            <div className="flex flex-col gap-3 z-10" style={{ transform: 'translateZ(20px)' }}>
+              <div>
+                <span className="text-[9px] font-mono tracking-widest text-neutral-500 uppercase block mb-1">
+                  {project.category}
                 </span>
-              ))}
+                <h4
+                  className="text-base font-bold mb-1.5 transition-all duration-300 font-sans tracking-tight"
+                  style={{
+                    color: hovered ? '#FFFFFF' : '#FFFFFF',
+                    textShadow: hovered ? `0 0 10px ${project.color}30` : 'none',
+                  }}
+                >
+                  <span 
+                    className="transition-all duration-300"
+                    style={{
+                      color: hovered ? project.color : '#FFFFFF',
+                    }}
+                  >
+                    {project.title}
+                  </span>
+                </h4>
+                <p className="text-xs text-text-secondary leading-relaxed line-clamp-3">
+                  {project.description}
+                </p>
+              </div>
+
+              {/* Tech tags */}
+              <div className="flex flex-wrap gap-1.5 flex-1 items-end" style={{ transform: 'translateZ(20px)' }}>
+                {project.tech.slice(0, 4).map((t) => (
+                  <span
+                    key={t}
+                    className="text-[9px] font-mono px-2.5 py-0.5 rounded-full border transition-all duration-300"
+                    style={{
+                      borderColor: hovered ? `${project.color}30` : 'rgba(255, 255, 255, 0.05)',
+                      backgroundColor: hovered ? `${project.color}08` : 'rgba(255, 255, 255, 0.02)',
+                      color: hovered ? '#FFFFFF' : '#A3A3A3',
+                      boxShadow: hovered ? `0 0 8px ${project.color}05` : 'none',
+                    }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
 
             {/* Action Links */}
             <div
-              className="flex gap-2 pt-3 border-t"
+              className="flex gap-2.5 pt-3.5 border-t z-20"
               style={{ borderColor: 'rgba(255,255,255,0.05)', transform: 'translateZ(15px)' }}
             >
               <a
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold flex-1 border border-white/5 hover:border-white/10 text-neutral-400 hover:text-white cursor-none"
+                className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold flex-1 border border-white/5 hover:border-white/20 text-neutral-400 hover:text-white bg-white/[0.01] hover:bg-white/[0.03] transition-all duration-300 scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-none"
               >
                 <FiGithub size={12} />
                 Code
@@ -158,11 +430,12 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold flex-1 cursor-none"
+                className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold flex-1 transition-all duration-300 scale-100 hover:scale-[1.02] active:scale-[0.98] cursor-none"
                 style={{
-                  background: `${project.color}10`,
-                  border: `1px solid ${project.color}25`,
-                  color: project.color,
+                  background: hovered ? project.color : `${project.color}15`,
+                  border: hovered ? `1px solid ${project.color}` : `1px solid ${project.color}25`,
+                  color: hovered ? '#0E0E0F' : project.color,
+                  boxShadow: hovered ? `0 0 15px ${project.color}35` : 'none',
                 }}
               >
                 <FiExternalLink size={12} />

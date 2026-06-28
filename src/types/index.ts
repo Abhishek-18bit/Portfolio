@@ -32,6 +32,8 @@ export interface Project {
   solution?: string;
   challenges?: string[];
   learnings?: string[];
+  mockFileName?: string;
+  mockCodeLines?: string[];
 }
 
 export interface CodingProfile {

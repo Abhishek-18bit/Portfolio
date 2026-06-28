@@ -29,8 +29,8 @@ const JOURNEY: JourneyItem[] = [
   },
   {
     year: '2025',
-    title: 'Gignest Freelancer Marketplace',
-    description: 'Engineered Gignest, a freelancer-client marketplace featuring secure session handling, WebSocket notifications, and dashboard telemetry.',
+    title: 'CSV Query Compiler',
+    description: 'Developed a high-performance compiler translating SQL queries to Python, implementing AST parsing, tokenizing, and an interactive IDE.',
   },
   {
     year: '2026',
