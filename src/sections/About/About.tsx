@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -147,12 +148,24 @@ export default function About() {
 
               {/* Avatar Shield */}
               <div className="w-full h-full rounded-full flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-tr from-surface to-card border border-white/5 shadow-2xl">
-                <div className="text-7xl mb-2 select-none">👨‍💻</div>
-                <div className="text-[10px] font-mono text-primary-light uppercase tracking-widest">
-                  &lt;systems_engineer /&gt;
+                <Image
+                  src="/profile.jpg"
+                  alt="Abhishek Kumar"
+                  fill
+                  className="object-cover object-center pointer-events-none z-0"
+                  priority
+                />
+                
+                {/* Gradient overlay to make text more readable */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent z-10" />
+                
+                <div className="absolute bottom-6 left-0 right-0 text-center z-20">
+                  <div className="text-[10px] font-mono text-primary-light uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    &lt;systems_engineer /&gt;
+                  </div>
                 </div>
 
-                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-secondary/10 blur-[15px] animate-pulse-slow" />
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-secondary/10 blur-[15px] animate-pulse-slow z-0" />
               </div>
 
               {/* Badges */}
